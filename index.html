@@ -168,8 +168,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-07 17:21:46" itemprop="dateCreated datePublished" datetime="2021-10-07T17:21:46+08:00">2021-10-07</time>
+              <time title="创建时间：2021-10-07 17:21:46 / 修改时间：17:31:38" itemprop="dateCreated datePublished" datetime="2021-10-07T17:21:46+08:00">2021-10-07</time>
             </span>
 
           
@@ -183,7 +184,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          
+          <h2 id="Git简介"><a href="#Git简介" class="headerlink" title="Git简介"></a>Git简介</h2><h3 id="一-什么是Git"><a href="#一-什么是Git" class="headerlink" title="一.什么是Git"></a>一.什么是Git</h3><figure class="highlight plaintext"><figcaption><span>```开源的```  ```分布式版本控制系统``` ，可以有效、高效的处理从很小到很大的项目</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">（1）.Git的存储方式是```直接快照```，而非差异比较</span><br><span class="line"></span><br><span class="line">![Git存储方式](https://github.com/Quinn0519/blog-img/blob/main/Git01.jpg?raw=true)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(2).Git的三种状态</span><br><span class="line"></span><br><span class="line">* ```已修改(modified)``` : 表示修改了文件，但还没保存到数据库中</span><br><span class="line"></span><br><span class="line">* ```已暂存(staged)``` : 表示对一个已修改的文件的当前版本做了标记，使之包含在下次提交的快照中</span><br><span class="line"></span><br><span class="line">* ```已提交(committed)``` : 表示数据已经安全的保存在本地数据库中</span><br><span class="line"></span><br><span class="line">&gt;所以Git项目拥有三个阶段：工作区、暂存区、Git目录</span><br><span class="line"></span><br><span class="line">![Git项目的三个阶段](https://github.com/Quinn0519/blog-img/blob/main/Git02.jpg?raw=true)</span><br><span class="line"></span><br><span class="line">(3).Git的工作流程：</span><br><span class="line"></span><br><span class="line">1.在工作区修改文件</span><br><span class="line"></span><br><span class="line">2.将你想要下次提交的更改选择性的暂存</span><br><span class="line"></span><br><span class="line">&gt;这样只会将更改的部分添加到暂存区</span><br><span class="line"></span><br><span class="line">3.提交更新，找到暂存区的文件，将快照永久性的存储到Git目录</span><br><span class="line"></span><br><span class="line">### 二.Git安装</span><br><span class="line">(1).在Linux上安装：</span><br><span class="line"></span><br><span class="line">1.以Fedora为例，可以使用```dnf```</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>sudo dnf install git-all</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2.基于Debian,如Ubuntu,使用```apt```安装</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>sudo apt install git-all</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(2).在Windows上安装</span><br><span class="line"></span><br><span class="line">可以直接访问网址[Git官网](&quot;https://git-scm.com/&quot;) ， 进行下载</span><br><span class="line"></span><br><span class="line">&gt; macOS系统同Windows</span><br><span class="line"></span><br><span class="line">### 三.Git配置</span><br><span class="line"></span><br><span class="line">(1).用户信息</span><br><span class="line">安装Git后，要先设置自己的用户名和邮件地址。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>git config –global user.name “你的名字或昵称”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>git config –global user.email “你的邮箱”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(2).文本编辑器</span><br><span class="line"></span><br><span class="line">配置默认文本编辑器，若未配置，Git会使用操作系统默认的文本编辑器</span><br><span class="line">&gt;此处使用系统默认文本编辑器,对于配置方法不做说明</span><br><span class="line"></span><br><span class="line">(3).检查配置信息</span><br></pre></td></tr></table></figure>
+<p>git config –list</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">(4).获取帮助</span><br><span class="line"></span><br><span class="line">1.找到Git命令综合手册</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>git help <verb></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>git <verb> –help</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>man git -<verb></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;三种等价寻找方式</span><br><span class="line"></span><br><span class="line">2.获得git config命令手册</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>git help config<br>```</p>
+
       
     </div>
 
