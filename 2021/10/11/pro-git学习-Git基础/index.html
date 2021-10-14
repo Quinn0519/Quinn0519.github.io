@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Git基础学会Git基础将可以执行以下操作： 1.如何配置并初始化一个仓库（repository) 2.开始或停止跟踪（track）文件 3.暂存（stage）或提交（commit）更改 4.浏览项目的历史版本以及 不同提交（commits）之间的差异 等等……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git基础">
+<meta property="og:url" content="http://example.com/2021/10/11/pro-git%E5%AD%A6%E4%B9%A0-Git%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="Quinn0519">
+<meta property="og:description" content="Git基础学会Git基础将可以执行以下操作： 1.如何配置并初始化一个仓库（repository) 2.开始或停止跟踪（track）文件 3.暂存（stage）或提交（commit）更改 4.浏览项目的历史版本以及 不同提交（commits）之间的差异 等等……">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-10-08%20113017.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git05.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git06.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git04.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git07.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git08.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git10.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git11.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git09.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git12.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git13.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git14.jpg?raw=true">
+<meta property="og:image" content="https://github.com/Quinn0519/blog-img/blob/main/Git15.jpg?raw=true">
+<meta property="article:published_time" content="2021-10-11T09:48:44.000Z">
+<meta property="article:modified_time" content="2021-10-14T03:38:29.360Z">
+<meta property="article:author" content="李禹婷">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/Quinn0519/blog-img/blob/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-10-08%20113017.jpg?raw=true">
+
+<link rel="canonical" href="http://example.com/2021/10/11/pro-git%E5%AD%A6%E4%B9%A0-Git%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Git基础 | Quinn0519</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Quinn0519</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/11/pro-git%E5%AD%A6%E4%B9%A0-Git%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李禹婷">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quinn0519">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-11 17:48:44" itemprop="dateCreated datePublished" datetime="2021-10-11T17:48:44+08:00">2021-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-14 11:38:29" itemprop="dateModified" datetime="2021-10-14T11:38:29+08:00">2021-10-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Git基础"><a href="#Git基础" class="headerlink" title="Git基础"></a>Git基础</h3><p>学会Git基础将可以执行以下操作：</p>
+<p>1.如何配置并初始化一个仓库（repository)</p>
+<p>2.开始或停止跟踪（track）文件</p>
+<p>3.暂存（stage）或提交（commit）更改</p>
+<p>4.浏览项目的历史版本以及 不同提交（commits）之间的差异</p>
+<p>等等……</p>
+<span id="more"></span>
+
+<h3 id="获取Git仓库"><a href="#获取Git仓库" class="headerlink" title="获取Git仓库"></a>获取Git仓库</h3><p>(1).将尚未进行版本控制的本地目录转换为Git仓库</p>
+<p>(2).从其它服务器 <strong>克隆</strong>一个已存在的Git仓库</p>
+<blockquote>
+<p>两种方式都会在你的本地机器上得到一个工作就绪的Git仓库</p>
+</blockquote>
+<h3 id="在已存在目录中初始化仓库"><a href="#在已存在目录中初始化仓库" class="headerlink" title="在已存在目录中初始化仓库"></a>在已存在目录中初始化仓库</h3><p>(1).在Linux系统上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /home/user/my_project</span><br></pre></td></tr></table></figure>
+
+<p>(2).在Windows系统上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /c/user/my_project</span><br></pre></td></tr></table></figure>
+
+<p>(3).在macOS系统上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/users/my_project</span><br></pre></td></tr></table></figure>
+
+<p><strong>之后执行</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>该命令将创建一个名为.git的子目录,此子目录里包含初始化的Git仓库的所有必须文件</p>
+</blockquote>
+<p>如果在一个已经存在文件的文件夹中进行版本控制，应该追踪这些文件并进行初始提交</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add *.c</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add LICENSE</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &#x27;initial project version&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="克隆现有仓库"><a href="#克隆现有仓库" class="headerlink" title="克隆现有仓库"></a>克隆现有仓库</h3><blockquote>
+<p>Git克隆的是该仓库服务器上的几乎所有数据，而非仅仅复制完成自己工作所需的文件 </p>
+</blockquote>
+<p>(1).克隆仓库的命令是<code>git clone &lt;url&gt;</code>,比如，要克隆的链接库<code>libgit2</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clonehttps://github.com/libgit2/libgit2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在当前目录下会创建一个名为<code>libgit2</code>的目录，并在当前目录下初始化一个<code>.git</code>文件夹</p>
+</blockquote>
+<p>(2).克隆仓库时自定义本地仓库的名字</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/libgit2/libgit2  mylibgit</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此条操作与上条操作执行结果一样，但是目标目录名字变为了<strong>mylibgit2</strong></p>
+</blockquote>
+<h3 id="记录每次更新到仓库"><a href="#记录每次更新到仓库" class="headerlink" title="记录每次更新到仓库"></a>记录每次更新到仓库</h3><p>工作目录下的文件只有两种状态：<strong>已追踪</strong>和<strong>未追踪</strong></p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202021-10-08%20113017.jpg?raw=true" alt="文件状态变化周期"></p>
+<h3 id="检查当前文件状态"><a href="#检查当前文件状态" class="headerlink" title="检查当前文件状态"></a>检查当前文件状态</h3><p>通过<code>git status</code>命令查看相关文件处于什么状态，输入命令后，若看到类似输出 </p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git05.jpg?raw=true"></p>
+<blockquote>
+<p>说明你现在的目录相当干净</p>
+</blockquote>
+<h3 id="跟踪新文件"><a href="#跟踪新文件" class="headerlink" title="跟踪新文件"></a>跟踪新文件</h3><p>跟踪<strong>README</strong>文件，运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add README</span><br></pre></td></tr></table></figure>
+<p>在运行<code>git status</code>命令，会看到README文件已被跟踪，并处于暂存状态：</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git06.jpg?raw=true"></p>
+<p>  <strong>在Changes to be committed这行下面的文件，状态都是已暂存状态</strong></p>
+<blockquote>
+<p>如果此时提交，那么该文件在你运行<code>git add</code>时的版本将被留存在后续的历史记录中</p>
+</blockquote>
+<h3 id="暂存已修改的文件"><a href="#暂存已修改的文件" class="headerlink" title="暂存已修改的文件"></a>暂存已修改的文件</h3><p>  如果你修改了一个名为<strong>CONTRIBUTING.md</strong>的已被追踪的文件，然后运行<code>git status</code>命令，将看到以下内容：</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git04.jpg?raw=true" alt="内容"></p>
+<blockquote>
+<p>文件<strong>CONTRIBUTING.md</strong>出现在<strong>Changs not staged for commit</strong>这行下面，说明追踪文件的内容已经发生了变化，但还没放到暂存区。</p>
+</blockquote>
+<blockquote>
+<p>暂存这次更新需要运行<code>git add</code>命令</p>
+</blockquote>
+<p><strong><code>git add</code>指令是个多功能指令：可以用它开始追踪新文件，或者把已追踪的文件放到暂存区，还能用于合并时把有冲突的文件标记为已解决状态</strong></p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git07.jpg?raw=true"></p>
+<blockquote>
+<p>现在两个文件已暂存，下次提交时就会一并记录到仓库</p>
+</blockquote>
+<p>假如此刻，你想要在<strong>CONTTRIBUTING.md</strong>里加条注释。重新编辑存盘后，准备好提交。可以先运行<code>git status</code>看看</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git08.jpg?raw=true"></p>
+<p>我们会发现<strong>CONTTRIBUTING.md</strong>文件同时出现在暂存区和缓存区，为什么会这样呢？</p>
+<p><strong>实际上，Git只暂存了你运行的<code>git add</code>命令时的版本，如果现在提交，CONTTRIBUTING.md的版本是你最后一次运行<code>git add</code>时的版本，而不是你运行<code>git commit</code>时，在工作目录中当前的版本</strong></p>
+<blockquote>
+<p>所以，运行了<code>git add</code>之后又作了修订的文件，需要重新运行<code>git add</code>把最新版本重新暂存起来</p>
+</blockquote>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git10.jpg?raw=true"></p>
+<h3 id="状态简览"><a href="#状态简览" class="headerlink" title="状态简览"></a>状态简览</h3><p>通过<code>git status -s</code>或<code>git status --short</code>命令，将得到一种格式紧凑的输出</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git11.jpg?raw=true"></p>
+<h3 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h3><p>当有些文件我们不需要纳入Git管理，也不想它们总出现在未追踪文件列表时，我们可以创建一个名为 <strong>.gitignore</strong> 的文件</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git09.jpg?raw=true"></p>
+<p>文件 <strong>.gitignore</strong> 的格式规范如下：</p>
+<ul>
+<li><p>所有空行或者以 <strong>#</strong> 开头的行都会被Git忽略</p>
+</li>
+<li><p>可以使用标准的glob模式匹配，它会递归的应用在整个工作区中</p>
+</li>
+<li><p>匹配模式可以以 <strong>（/)</strong> 开头防止递归</p>
+</li>
+<li><p>匹配模式可以以 <strong>（/)</strong> 结尾指定目录</p>
+</li>
+<li><p>要忽略指定模式以外的文件或目录，可以在模式前加上 <strong>（！）</strong> 取反</p>
+</li>
+</ul>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git12.jpg?raw=true"></p>
+<blockquote>
+<p>GitHub上有一个十分详细的<code>.gitignore</code>文件列表，你可以在<br><a target="_blank" rel="noopener" href="http://github.com/github/gitignore">此网址</a>查找</p>
+</blockquote>
+<h3 id="查看已暂存和未暂存的修改"><a href="#查看已暂存和未暂存的修改" class="headerlink" title="查看已暂存和未暂存的修改"></a>查看已暂存和未暂存的修改</h3><p>假如再次修改REAREAME文件后暂存，然后编辑<strong>CONTRIBUTING.md</strong>文件后先不暂存，运行<code>git status</code>将会看到：</p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git13.jpg?raw=true"></p>
+<p>要查看尚未暂存的文件更新了哪些部分，不加参数直接输入<code>git diff</code></p>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git14.jpg?raw=true"></p>
+<blockquote>
+<p>此命令比较的是工作目录中当前文件和暂存区域快照之间的<strong>差异</strong>。</p>
+</blockquote>
+<p>若要查看已暂存的将要添加到下次提交的内容，可以用<code>git diff --staged</code>命令</p>
+<blockquote>
+<p>这条命令将对比已暂存文件与最后一次提交的文件差异：</p>
+</blockquote>
+<p><img src="https://github.com/Quinn0519/blog-img/blob/main/Git15.jpg?raw=true"></p>
+<p><strong>注：<code>git diff</code>本身只显示尚未暂存的改动，而不是自上次提交以来所做的所有改动</strong></p>
+<p><img src=""></p>
+<h3 id="提交更新"><a href="#提交更新" class="headerlink" title="提交更新"></a>提交更新</h3><p><strong>每次提交前应先用<code>git status</code>看下，自己所需的文件是否都已经已暂存起来</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit</span><br></pre></td></tr></table></figure>
+
+<p>也可以在commit命令后添加-m选项，将提交信息与命令放在同一行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m</span><br></pre></td></tr></table></figure>
+
+<h3 id="跳过使用暂存区"><a href="#跳过使用暂存区" class="headerlink" title="跳过使用暂存区"></a>跳过使用暂存区</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -a</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Git会自动把所有已经追踪过的文件暂存起来一并提交，从而跳过<code>git add</code>步骤</p>
+</blockquote>
+<h3 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Git中移除某个文件，就必须要从已跟踪文件清单中清除(<strong>确切的说，是从暂存区移除</strong>)</p>
+</blockquote>
+<h3 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git mv</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此命令也有改名的作用<code>git mv 文件名 新的文件名</code></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/07/Git%E7%AE%80%E4%BB%8B/" rel="prev" title="Git简介">
+      <i class="fa fa-chevron-left"></i> Git简介
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">Git基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Git%E4%BB%93%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">获取Git仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9B%AE%E5%BD%95%E4%B8%AD%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%93%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">在已存在目录中初始化仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%8B%E9%9A%86%E7%8E%B0%E6%9C%89%E4%BB%93%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">克隆现有仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E6%AF%8F%E6%AC%A1%E6%9B%B4%E6%96%B0%E5%88%B0%E4%BB%93%E5%BA%93"><span class="nav-number">5.</span> <span class="nav-text">记录每次更新到仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="nav-number">6.</span> <span class="nav-text">检查当前文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9F%E8%B8%AA%E6%96%B0%E6%96%87%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">跟踪新文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9A%82%E5%AD%98%E5%B7%B2%E4%BF%AE%E6%94%B9%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">暂存已修改的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8A%B6%E6%80%81%E7%AE%80%E8%A7%88"><span class="nav-number">9.</span> <span class="nav-text">状态简览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="nav-number">10.</span> <span class="nav-text">忽略文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%B7%B2%E6%9A%82%E5%AD%98%E5%92%8C%E6%9C%AA%E6%9A%82%E5%AD%98%E7%9A%84%E4%BF%AE%E6%94%B9"><span class="nav-number">11.</span> <span class="nav-text">查看已暂存和未暂存的修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%9B%B4%E6%96%B0"><span class="nav-number">12.</span> <span class="nav-text">提交更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%BF%87%E4%BD%BF%E7%94%A8%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="nav-number">13.</span> <span class="nav-text">跳过使用暂存区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">14.</span> <span class="nav-text">移除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6"><span class="nav-number">15.</span> <span class="nav-text">移动文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李禹婷</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李禹婷</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
