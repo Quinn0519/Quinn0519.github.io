@@ -28,7 +28,7 @@
 <meta property="og:description" content="作用域是可访问变量的集合。  在JavaScript中, 作用域为可访问变量，对象，函数的集合。  JavaScript函数作用域: 作用域在函数内修改。   作用域的意义 作用域最为重要的一点是安全。变量只能在特定的区域内才能被访问。  作用域也会减轻命名的压力。我们可以在不同的作用域下面定义相同的变量名">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-07-23T08:22:02.000Z">
-<meta property="article:modified_time" content="2022-07-23T08:24:27.925Z">
+<meta property="article:modified_time" content="2022-07-23T08:29:12.541Z">
 <meta property="article:author" content="李禹婷">
 <meta property="article:tag" content="Web">
 <meta property="article:tag" content="JavaScript">
@@ -187,7 +187,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-07-23 16:22:02 / 修改时间：16:24:27" itemprop="dateCreated datePublished" datetime="2022-07-23T16:22:02+08:00">2022-07-23</time>
+              <time title="创建时间：2022-07-23 16:22:02 / 修改时间：16:29:12" itemprop="dateCreated datePublished" datetime="2022-07-23T16:22:02+08:00">2022-07-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,7 +283,7 @@
 <blockquote>
 <p>如果是在非严格模式下，引擎会创建一个number的全局变量并把42赋值给它。但如果是严格模式下就会报错了。<br><strong>所以，当使用一个变量的时候，Javascript引擎会循着作用域链一层一层往上找该变量，直到找到该变量为止。</strong></p>
 </blockquote>
-<p>也可以类比函数嵌套</p>
+<p>类比函数嵌套</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 局部函数</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;你好&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 调用局部函数</span></span><br><span class="line">    inner();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用外部函数</span></span><br><span class="line">fun();</span><br></pre></td></tr></table></figure>
 <p>在函数嵌套中，变量会从内到外逐层寻找它的定义。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">20</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="number">40</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> a = <span class="number">40</span>;</span><br><span class="line">        <span class="keyword">var</span> d = <span class="number">50</span>;</span><br><span class="line">        <span class="built_in">console</span>.log(a, b, c, d);	<span class="comment">// 40 20 40 50</span></span><br><span class="line">    &#125;</span><br><span class="line">    inner();</span><br><span class="line">&#125;</span><br><span class="line">fun();</span><br></pre></td></tr></table></figure>
