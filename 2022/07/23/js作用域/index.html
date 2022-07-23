@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="作用域是可访问变量的集合。  在JavaScript中, 作用域为可访问变量，对象，函数的集合。  JavaScript函数作用域: 作用域在函数内修改。   作用域的意义 作用域最为重要的一点是安全。变量只能在特定的区域内才能被访问。  作用域也会减轻命名的压力。我们可以在不同的作用域下面定义相同的变量名">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js作用域">
+<meta property="og:url" content="http://example.com/2022/07/23/js%E4%BD%9C%E7%94%A8%E5%9F%9F/index.html">
+<meta property="og:site_name" content="Quinn0519">
+<meta property="og:description" content="作用域是可访问变量的集合。  在JavaScript中, 作用域为可访问变量，对象，函数的集合。  JavaScript函数作用域: 作用域在函数内修改。   作用域的意义 作用域最为重要的一点是安全。变量只能在特定的区域内才能被访问。  作用域也会减轻命名的压力。我们可以在不同的作用域下面定义相同的变量名">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-23T08:22:02.000Z">
+<meta property="article:modified_time" content="2022-07-23T08:24:27.925Z">
+<meta property="article:author" content="李禹婷">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/07/23/js%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>js作用域 | Quinn0519</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Quinn0519</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">李禹婷</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/23/js%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="李禹婷">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Quinn0519">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js作用域
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-07-23 16:22:02 / 修改时间：16:24:27" itemprop="dateCreated datePublished" datetime="2022-07-23T16:22:02+08:00">2022-07-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">JavaScript学习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>作用域是可访问变量的集合。</p>
+<ul>
+<li><p>在JavaScript中, 作用域为可访问变量，对象，函数的集合。</p>
+</li>
+<li><p>JavaScript函数作用域: 作用域在函数内修改。</p>
+</li>
+</ul>
+<h2 id="作用域的意义"><a href="#作用域的意义" class="headerlink" title="作用域的意义"></a>作用域的意义</h2><ul>
+<li><p>作用域最为重要的一点是安全。变量只能在特定的区域内才能被访问。</p>
+</li>
+<li><p>作用域也会减轻命名的压力。我们可以在不同的作用域下面定义相同的变量名</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="作用域的类型"><a href="#作用域的类型" class="headerlink" title="作用域的类型"></a>作用域的类型</h2><ul>
+<li>全局作用域</li>
+<li>局部作用域</li>
+<li>块级作用域</li>
+</ul>
+<h3 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h3><p>1.变量在函数外定义，即为全局变量。</p>
+<p><strong>全局变量有全局作用域: 网页中所有脚本和函数均可使用。</strong> </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> carName = <span class="string">&quot; Volvo&quot;</span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 此处可调用 carName 变量</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 函数内可调用 carName 变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.变量在函数内没有声明，该变量为全局变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此处可调用 carName 变量</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    carName = <span class="string">&quot;Volvo&quot;</span>;</span><br><span class="line">    <span class="comment">// 此处可调用 carName 变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="局部作用域"><a href="#局部作用域" class="headerlink" title="局部作用域"></a>局部作用域</h3><p>变量在函数内声明，变量为局部变量，具有局部作用域。</p>
+<p><strong>局部变量：只能在函数内部访问。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此处不能调用 carName 变量</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> carName = <span class="string">&quot;Volvo&quot;</span>;</span><br><span class="line">    <span class="comment">// 函数内可调用 carName 变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>因为局部变量只作用于函数内，所以不同的函数可以使用相同名称的变量。</p>
+</blockquote>
+<blockquote>
+<p>局部变量在函数开始执行时创建，函数执行完后局部变量会自动销毁。</p>
+</blockquote>
+<h3 id="块级作用域"><a href="#块级作用域" class="headerlink" title="块级作用域"></a>块级作用域</h3><p>ES6引入了let和const关键字,和var关键字不同，在大括号中使用let和const声明的变量存在于块级作用域中。在大括号之外不能访问这些变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 块级作用域中的变量</span></span><br><span class="line">  <span class="keyword">let</span> greeting = <span class="string">&#x27;Hello World!&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> lang = <span class="string">&#x27;English&#x27;</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(greeting); <span class="comment">// Prints &#x27;Hello World!&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 变量 &#x27;English&#x27;</span></span><br><span class="line"><span class="built_in">console</span>.log(lang);</span><br><span class="line"><span class="comment">// 报错：Uncaught ReferenceError: greeting is not defined</span></span><br><span class="line"><span class="built_in">console</span>.log(greeting);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面代码中可以看出，在大括号内使用var声明的变量lang是可以在大括号之外访问的。<strong>使用var声明的变量不存在块级作用域中。</strong></p>
+</blockquote>
+<h2 id="作用域的嵌套"><a href="#作用域的嵌套" class="headerlink" title="作用域的嵌套"></a>作用域的嵌套</h2><p>像函数可以在一个函数内部声明另一个函数一样，作用域也可以嵌套在另一个作用域中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;Peter&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> greeting = <span class="string">&#x27;Hello&#x27;</span>;</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">let</span> lang = <span class="string">&#x27;English&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;lang&#125;</span>: <span class="subst">$&#123;greeting&#125;</span> <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">greet();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里我们有三层作用域嵌套，首先第一层是一个块级作用域（let声明的），被嵌套在一个函数作用域(greet函数)中，最外层作用域是全局作用域。</p>
+</blockquote>
+<h2 id="静态作用域"><a href="#静态作用域" class="headerlink" title="静态作用域"></a>静态作用域</h2><p>静态作用域（也叫词法作用域）从字面意义上看是作用域在是编译阶段确定而非执行阶段确定的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> number = <span class="number">42</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">printNumber</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> number = <span class="number">54</span>;</span><br><span class="line">  printNumber();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints 42</span></span><br><span class="line">log();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上面代码可以看出无论printNumber()在哪里调用console.log(number)都会打印42。</p>
+</blockquote>
+<blockquote>
+<p>动态作用域不同，console.log(number)这行代码打印什么取决于函数printNumber()在哪里调用。</p>
+</blockquote>
+<ul>
+<li><p>如果是动态作用域，上面console.log(number)这行代码就会打印54。</p>
+</li>
+<li><p>使用静态作用域，我们可以仅仅看源代码就可以确定一个变量的作用范围，但如果是动态作用域，代码执行之前我们没法确定变量的作用范围。</p>
+</li>
+<li><p>像C，C++，Java，Javascript等大多数编程语言都支持静态作用域。Perl 既支持动态作用域也支持静态作用域。</p>
+</li>
+</ul>
+<h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><p>当在Javascript中使用一个变量的时候，首先Javascript引擎会尝试在当前作用域下去寻找该变量，如果没找到，再到它的上层作用域寻找，以此类推直到找到该变量或是已经到了全局作用域。</p>
+<p>如果在全局作用域里仍然找不到该变量，它就会在全局范围内隐式声明该变量(非严格模式下)或是直接报错。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;foo&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> baz = <span class="string">&#x27;baz&#x27;</span>;</span><br><span class="line">  <span class="comment">// 打印 &#x27;baz&#x27;</span></span><br><span class="line">  <span class="built_in">console</span>.log(baz);</span><br><span class="line">  <span class="comment">// 打印 &#x27;foo&#x27;</span></span><br><span class="line">  <span class="built_in">console</span>.log(foo);</span><br><span class="line">  number = <span class="number">42</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(number);  <span class="comment">// 打印 42</span></span><br><span class="line">&#125;</span><br><span class="line">bar();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当函数bar()被调用，Javascript引擎首先在当前作用域下寻找变量baz，然后寻找foo变量但发现在当前作用域下找不到，然后继续在外部作用域寻找找到了它(这里是在全局作用域找到的)。</p>
+</blockquote>
+<blockquote>
+<p>然后将42赋值给变量number。Javascript引擎会在当前作用域以及外部作用域下一步步寻找number变量(没找到)。</p>
+</blockquote>
+<blockquote>
+<p>如果是在非严格模式下，引擎会创建一个number的全局变量并把42赋值给它。但如果是严格模式下就会报错了。<br><strong>所以，当使用一个变量的时候，Javascript引擎会循着作用域链一层一层往上找该变量，直到找到该变量为止。</strong></p>
+</blockquote>
+<p>也可以类比函数嵌套</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 局部函数</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;你好&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 调用局部函数</span></span><br><span class="line">    inner();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用外部函数</span></span><br><span class="line">fun();</span><br></pre></td></tr></table></figure>
+<p>在函数嵌套中，变量会从内到外逐层寻找它的定义。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">20</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = <span class="number">40</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">inner</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> a = <span class="number">40</span>;</span><br><span class="line">        <span class="keyword">var</span> d = <span class="number">50</span>;</span><br><span class="line">        <span class="built_in">console</span>.log(a, b, c, d);	<span class="comment">// 40 20 40 50</span></span><br><span class="line">    &#125;</span><br><span class="line">    inner();</span><br><span class="line">&#125;</span><br><span class="line">fun();</span><br></pre></td></tr></table></figure>
+
+<h2 id="作用域和作用域链是如何工作的"><a href="#作用域和作用域链是如何工作的" class="headerlink" title="作用域和作用域链是如何工作的"></a>作用域和作用域链是如何工作的</h2><h3 id="词法环境"><a href="#词法环境" class="headerlink" title="词法环境"></a>词法环境</h3><p>所谓词法环境就是一种标识符—变量映射的结构</p>
+<ul>
+<li>这里的标识符指的是变量/函数的名字</li>
+<li>变量是对实际对象[包含函数和数组类型的对象]或基础数据类型的引用)。</li>
+</ul>
+<p>简单地说，词法环境是Javascript引擎用来存储变量和对象引用的地方。</p>
+<p><strong>注意：不要混淆了词法环境和词法作用域，词法作用域是在代码编译阶段确定的作用域(译者注：一个抽象的概念)，而词法环境是Javascript引擎用来存储变量和对象引用的地方(译者注：一个具象的概念)。</strong></p>
+<p>一个词法环境就像下面这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lexicalEnvironment = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="number">25</span>,</span><br><span class="line">  <span class="attr">obj</span>: <span class="xml"><span class="tag">&lt;<span class="name">ref.</span> <span class="attr">to</span> <span class="attr">the</span> <span class="attr">object</span>&gt;</span></span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>只有当该作用域的代码被执行的时候，引擎才会为那个作用域创建一个新的词法环境。词法环境还会记录所引用的外部词法环境(即外部作用域)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lexicalEnvironment = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="number">25</span>,</span><br><span class="line">  <span class="attr">obj</span>: &lt;ref. to the object&gt;</span><br><span class="line">  outer: &lt;outer lexical environemt&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Javascript引擎是如何进行变量查找的"><a href="#Javascript引擎是如何进行变量查找的" class="headerlink" title="Javascript引擎是如何进行变量查找的"></a>Javascript引擎是如何进行变量查找的</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> greeting = <span class="string">&#x27;Hello&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">greet</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> name = <span class="string">&#x27;Peter&#x27;</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;greeting&#125;</span> <span class="subst">$&#123;name&#125;</span>`</span>); <span class="comment">// Hello Peter</span></span><br><span class="line">&#125;</span><br><span class="line">greet();</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">let</span> greeting = <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">  <span class="built_in">console</span>.log(greeting); <span class="comment">// Hello World!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码加载后，首先会创建一个全局词法环境，其中包含在全局范围内声明的变量和函数。像下面这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">globalLexicalEnvironment = &#123;</span><br><span class="line">  <span class="attr">greeting</span>: <span class="string">&#x27;Hello&#x27;</span></span><br><span class="line">  <span class="attr">greet</span>: &lt;ref. to greet function&gt;</span><br><span class="line">  outer: &lt;null&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里的outer字段(也就是外部词法环境)被设置为了null，是因为全局词法环境已经是最顶层的词法环境了。</p>
+</blockquote>
+<p>然后，我们调用了greet()函数，然后一个新的词法环境会被被创建：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">functionLexicalEnvironment = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Peter&#x27;</span></span><br><span class="line">  <span class="attr">outer</span>: &lt;globalLexicalEnvironment&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里的outer字段被设置为了globalLexicalEnvironment，是因为他的外部作用域就是全局作用域。</p>
+</blockquote>
+<blockquote>
+<p>然后，执行console.log(<code>$&#123;greeting&#125; $&#123;name&#125;</code>)这行代码，Javascript引擎首先在当前函数的词法环境中寻找变量greeting和name，但只找到了name，没找到greeting。然后继续在上层的词法环境中找greeting（这里是全局作词法环境）。最后在全局词法环境中找到了greeting。</p>
+</blockquote>
+<p>紧接着执行那段在大括号里的代码，为这个块级创建一个新的词法环境。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">blockLexicalEnvironment = &#123;</span><br><span class="line">  <span class="attr">greeting</span>: <span class="string">&#x27;Hello World&#x27;</span>,</span><br><span class="line">  <span class="attr">outer</span>: &lt;globalLexicalEnvironment&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>然后执行console.log(greeting)这行代码，首先在本层词法环境中找greeting，此时就不会再去外部作用域(这里是全局作用域)寻找该变量了。</p>
+</blockquote>
+<p><strong>注意：只有let和const声明变量才会创建一个新的词法环境存储，使用var声明的变量会被存储在当前块（大括号）所在的词法环境中（全局词法环境或是函数词法环境中）。</strong></p>
+<p><strong>结论：当一个变量被使用时，Javascript引擎会首先在当前的词法环境中进行寻找，如果找不到就找上层词法环境中寻找，直到找到为止。</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li><p>作用域就是一个变量可访问和可见的区域，和函数一样，Javascript的作用域也可以嵌套，Javascript引擎会层层遍历作用域来寻找用到的变量。</p>
+</li>
+<li><p>Javascript使用词法作用域，这意味着变量的作用在编译阶段就会被确定。</p>
+</li>
+<li><p>Javascript引擎在程序执行期间使用词法环境来存储变量和函数。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"># Web</a>
+              <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/07/20/js%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5/" rel="prev" title="js循环语句">
+      <i class="fa fa-chevron-left"></i> js循环语句
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E6%84%8F%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">作用域的意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">作用域的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.1.</span> <span class="nav-text">全局作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.2.</span> <span class="nav-text">局部作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%97%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.3.</span> <span class="nav-text">块级作用域</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E5%B5%8C%E5%A5%97"><span class="nav-number">3.</span> <span class="nav-text">作用域的嵌套</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">4.</span> <span class="nav-text">静态作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE"><span class="nav-number">5.</span> <span class="nav-text">作用域链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">作用域和作用域链是如何工作的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%8D%E6%B3%95%E7%8E%AF%E5%A2%83"><span class="nav-number">6.1.</span> <span class="nav-text">词法环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Javascript%E5%BC%95%E6%93%8E%E6%98%AF%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E5%8F%98%E9%87%8F%E6%9F%A5%E6%89%BE%E7%9A%84"><span class="nav-number">6.2.</span> <span class="nav-text">Javascript引擎是如何进行变量查找的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">李禹婷</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">李禹婷</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
